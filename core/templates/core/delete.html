@@ -1,0 +1,16 @@
+{% extends 'core/base.html' %}
+{% block body %}
+
+
+<div class="container">
+    <div class="col-md-8">
+        <form action="." method="POST">{% csrf_token %}
+            <h4>would you like to delete this post?</h4>
+            <button class="btn btn-danger" type="submit">submit</button>
+            <a class="btn btn-warning" href="{% url 'detail' pk=post.pk %}">cancel</a>
+        </form>
+    </div>
+</div>
+
+
+{% endblock %}

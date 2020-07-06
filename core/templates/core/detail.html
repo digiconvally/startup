@@ -9,4 +9,8 @@
 <p>{{ objects.content }}</p>
 
 
+
+<a class="btn btn-warning" href="{% url 'update' pk=objects.pk %}">update</a>
+<a class="btn btn-danger" href="{% url 'delete' pk=objects.pk %}">delete</a>
+
 {% endblock %}
