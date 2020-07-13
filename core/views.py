@@ -1,11 +1,10 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Post
 from .forms import PostForm
+from .models import Post
 
 
 def Home(request):
-    queryset = Post.objects.all().order_by('-created_at')
-
+    queryset = Post.objects.filter(feature=True).order_by('-created_at')
     context = {
         'posts': queryset
     }
@@ -34,12 +33,13 @@ def detaillistViews(request, pk):
 
 
 def PostUpdate(request, pk):
-    post = get_object_or_404(Post, pk=pk)
-    form = PostForm(request.POST, instance=post)
+    obj = get_object_or_404(Post, pk=pk)
+
+    form = PostForm(request.POST or None, instance=obj)
+
     if form.is_valid():
         form.save()
         return redirect('/')
-
     context = {'form': form}
     return render(request, 'core/create.html', context)
 
