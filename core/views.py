@@ -14,7 +14,7 @@ def Home(request):
 def PostCreate(request):
     form = PostForm
     if request.method == 'POST':
-        form = PostForm(request.POST)
+        form = PostForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             return redirect('/')
