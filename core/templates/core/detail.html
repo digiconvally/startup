@@ -5,12 +5,12 @@
 
 <h1>detail page views</h1>
 
-<h3>{{ objects.title }}</h3>
-<p>{{ objects.content }}</p>
+<h3>{{ object.title }}</h3>
+<p>{{ object.content }}</p>
 
 
 
-<a class="btn btn-warning" href="{% url 'update' pk=objects.pk %}">update</a>
-<a class="btn btn-danger" href="{% url 'delete' pk=objects.pk %}">delete</a>
+<a class="btn btn-warning" href="{% url 'update' pk=object.pk %}">update</a>
+<a class="btn btn-danger" href="{% url 'delete' pk=object.pk %}">delete</a>
 
 {% endblock %}

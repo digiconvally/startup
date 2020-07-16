@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from PIL import Image
 
 
@@ -11,3 +12,6 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_success_url(self):
+        return reverse('detail', kwargs={'pk': self.pk})

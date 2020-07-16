@@ -1,5 +1,12 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .forms import PostForm
+from django.views.generic import (
+    ListView,
+    DetailView,
+    CreateView,
+    UpdateView,
+    DeleteView
+)
 from .models import Post
 
 
@@ -50,3 +57,40 @@ def PostDelete(request, pk):
         post.delete()
         return redirect('/')
     return render(request, 'core/delete.html', {'post': post})
+
+
+class PostListViews(ListView):
+    model = Post
+    context_object_name = 'posts'
+    template_name = 'core/home.html'
+    ordering = '-created_at'
+
+
+class PostDetailViews(DetailView):
+    model = Post
+    template_name = 'core/detail.html'
+
+
+class PostUpdateViews(UpdateView):
+    model = Post
+    form_class = PostForm
+    # success_url = '/'
+    template_name = 'core/create.html'
+
+    def get_success_url(self, **kwargs):
+        return self.object.get_success_url()
+
+
+class PostCreateViews(CreateView):
+    form_class = PostForm
+    template_name = 'core/create.html'
+    # success_url = '/'
+
+    def get_success_url(self, **kwargs):
+        return self.object.get_success_url()
+
+
+class PostDeleteViews(DeleteView):
+    model = Post
+    success_url = '/'
+    template_name = 'core/delete.html'
