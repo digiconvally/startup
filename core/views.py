@@ -1,4 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import PostForm
 from django.views.generic import (
     ListView,
@@ -10,6 +12,7 @@ from django.views.generic import (
 from .models import Post
 
 
+@login_required
 def Home(request):
     queryset = Post.objects.filter(feature=True).order_by('-created_at')
     context = {
@@ -18,6 +21,7 @@ def Home(request):
     return render(request, 'core/home.html', context)
 
 
+@login_required
 def PostCreate(request):
     form = PostForm
     if request.method == 'POST':
@@ -31,6 +35,7 @@ def PostCreate(request):
     return render(request, 'core/create.html', context)
 
 
+@login_required
 def detaillistViews(request, pk):
     post = get_object_or_404(Post, pk=pk)
     context = {
@@ -39,6 +44,7 @@ def detaillistViews(request, pk):
     return render(request, 'core/detail.html', context)
 
 
+@login_required
 def PostUpdate(request, pk):
     obj = get_object_or_404(Post, pk=pk)
 
@@ -51,6 +57,7 @@ def PostUpdate(request, pk):
     return render(request, 'core/create.html', context)
 
 
+@login_required
 def PostDelete(request, pk):
     post = get_object_or_404(Post, pk=pk)
     if request.method == 'POST':
@@ -59,19 +66,19 @@ def PostDelete(request, pk):
     return render(request, 'core/delete.html', {'post': post})
 
 
-class PostListViews(ListView):
+class PostListViews(LoginRequiredMixin, ListView):
     model = Post
     context_object_name = 'posts'
     template_name = 'core/home.html'
     ordering = '-created_at'
 
 
-class PostDetailViews(DetailView):
+class PostDetailViews(LoginRequiredMixin, DetailView):
     model = Post
     template_name = 'core/detail.html'
 
 
-class PostUpdateViews(UpdateView):
+class PostUpdateViews(LoginRequiredMixin, UpdateView):
     model = Post
     form_class = PostForm
     # success_url = '/'
@@ -81,7 +88,7 @@ class PostUpdateViews(UpdateView):
         return self.object.get_success_url()
 
 
-class PostCreateViews(CreateView):
+class PostCreateViews(LoginRequiredMixin, CreateView):
     form_class = PostForm
     template_name = 'core/create.html'
     # success_url = '/'
@@ -90,7 +97,7 @@ class PostCreateViews(CreateView):
         return self.object.get_success_url()
 
 
-class PostDeleteViews(DeleteView):
+class PostDeleteViews(LoginRequiredMixin, DeleteView):
     model = Post
     success_url = '/'
     template_name = 'core/delete.html'
